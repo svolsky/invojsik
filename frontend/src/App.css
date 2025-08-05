@@ -8,7 +8,11 @@ body {
   background-color: #f4f7fa;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app-container {
+  display: flex;
 }
+
+.main-content {
+  flex-grow: 1;
+}
+

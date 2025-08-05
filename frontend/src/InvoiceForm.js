@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './InvoiceForm.css';
 
-// Ключ для хранения данных в localStorage
 const LOCAL_STORAGE_KEY = 'invojsik-draft';
 
-// Начальное, пустое состояние формы
 const getInitialFormData = () => ({
     invoiceNumber: '',
     invoiceDate: '',
     dueDate: '',
+    dateOfTaxableSupply: '',
+    currency: 'EUR', // Валюта по умолчанию
     billFrom: {
         companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
     },
@@ -19,33 +19,45 @@ const getInitialFormData = () => ({
     notes: 'Thanks for your business!',
 });
 
-const InvoiceForm = () => {
+const currencySymbols = {
+    EUR: '€',
+    USD: '$',
+    GBP: '£',
+};
+
+const InvoiceForm = ({ currency }) => {
     const [formData, setFormData] = useState(() => {
-        // 1. Загрузка данных при инициализации
         const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (savedData) {
             try {
-                return JSON.parse(savedData);
+                const parsed = JSON.parse(savedData);
+                // Убедимся, что валюта из настроек имеет приоритет
+                parsed.currency = currency;
+                return parsed;
             } catch (error) {
                 console.error("Error parsing invoice data from localStorage", error);
-                return getInitialFormData();
             }
         }
-        return getInitialFormData();
+        // Если ничего нет, создаем новую форму с текущей валютой
+        return { ...getInitialFormData(), currency };
     });
 
-    // 2. Сохранение данных в localStorage при любом изменении
     useEffect(() => {
+        // Обновляем состояние, если валюта изменилась в Settings
+        if (formData.currency !== currency) {
+            setFormData(prev => ({ ...prev, currency }));
+        }
+    }, [currency]);
+
+    useEffect(() => {
+        // Сохраняем в localStorage при любом изменении данных
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
     }, [formData]);
 
     const handleInputChange = (section, e) => {
         const { name, value } = e.target;
         if (section === 'billFrom' || section === 'billTo') {
-            setFormData(prev => ({
-                ...prev,
-                [section]: { ...prev[section], [name]: value }
-            }));
+            setFormData(prev => ({ ...prev, [section]: { ...prev[section], [name]: value } }));
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
@@ -59,13 +71,11 @@ const InvoiceForm = () => {
     };
 
     const handleAddItem = () => {
-        const newItems = [...formData.items, { description: '', quantity: 1, rate: 0 }];
-        setFormData(prev => ({ ...prev, items: newItems }));
+        setFormData(prev => ({ ...prev, items: [...prev.items, { description: '', quantity: 1, rate: 0 }] }));
     };
 
     const handleRemoveItem = (index) => {
-        const newItems = formData.items.filter((_, i) => i !== index);
-        setFormData(prev => ({ ...prev, items: newItems }));
+        setFormData(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
     };
 
     const calculateTotal = (quantity, rate) => {
@@ -76,6 +86,7 @@ const InvoiceForm = () => {
     const taxRate = 0; // Placeholder
     const tax = subtotal * taxRate;
     const total = subtotal + tax;
+    const currentCurrencySymbol = currencySymbols[formData.currency] || formData.currency;
 
     return (
         <div className="invoice-form-container">
@@ -83,13 +94,8 @@ const InvoiceForm = () => {
                 <div className="form-header">
                     <h1>INVOICE</h1>
                     <div className="invoice-number">
-                        <label htmlFor="invoiceNumber">#</label>
-                        <input
-                            type="text"
-                            name="invoiceNumber"
-                            value={formData.invoiceNumber}
-                            onChange={(e) => setFormData(prev => ({...prev, invoiceNumber: e.target.value}))}
-                        />
+                        <label>#</label>
+                        <input type="text" name="invoiceNumber" value={formData.invoiceNumber} onChange={(e) => handleInputChange(null, e)} />
                     </div>
                 </div>
 
@@ -97,9 +103,7 @@ const InvoiceForm = () => {
                     <div className="form-group bill-from">
                         <label>Bill From</label>
                         <div className="bill-from-grid">
-                            <div className="form-group grid-col-span-2">
-                                <input type="text" name="companyName" placeholder="Company Name" value={formData.billFrom.companyName} onChange={(e) => handleInputChange('billFrom', e)} />
-                            </div>
+                            <div className="form-group grid-col-span-2"><input type="text" name="companyName" placeholder="Company Name" value={formData.billFrom.companyName} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group"><input type="text" name="ico" placeholder="ICO" value={formData.billFrom.ico} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group"><input type="text" name="dic" placeholder="DIC" value={formData.billFrom.dic} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="streetAddress" placeholder="Street Address" value={formData.billFrom.streetAddress} onChange={(e) => handleInputChange('billFrom', e)} /></div>
@@ -109,18 +113,9 @@ const InvoiceForm = () => {
                         </div>
                     </div>
                     <div className="details-group">
-                        <div className="form-group">
-                            <label>Date</label>
-                            <input type="date" name="invoiceDate" value={formData.invoiceDate} onChange={(e) => setFormData(prev => ({...prev, invoiceDate: e.target.value}))} />
-                        </div>
-                        <div className="form-group">
-                            <label>Due Date</label>
-                            <input type="date" name="dueDate" value={formData.dueDate} onChange={(e) => setFormData(prev => ({...prev, dueDate: e.target.value}))} />
-                        </div>
-                        <div className="form-group">
-                            <label>Date of Taxable Supply</label>
-                            <input type="date" name="dateOfTaxableSupply" value={formData.dateOfTaxableSupply} onChange={(e) => setFormData(prev => ({...prev, dateOfTaxableSupply: e.target.value}))} />
-                        </div>
+                        <div className="form-group"><label>Date</label><input type="date" name="invoiceDate" value={formData.invoiceDate} onChange={(e) => handleInputChange(null, e)} /></div>
+                        <div className="form-group"><label>Due Date</label><input type="date" name="dueDate" value={formData.dueDate} onChange={(e) => handleInputChange(null, e)} /></div>
+                        <div className="form-group"><label>Date of Taxable Supply</label><input type="date" name="dateOfTaxableSupply" value={formData.dateOfTaxableSupply} onChange={(e) => handleInputChange(null, e)} /></div>
                     </div>
                 </div>
 
@@ -148,7 +143,7 @@ const InvoiceForm = () => {
                                     <td><input type="text" placeholder="Item description" value={item.description} onChange={(e) => handleItemChange(index, 'description', e.target.value)} /></td>
                                     <td><input type="number" min="1" value={item.quantity} onChange={(e) => handleItemChange(index, 'quantity', e.target.value)} /></td>
                                     <td><input type="number" min="0" step="0.01" value={item.rate} onChange={(e) => handleItemChange(index, 'rate', e.target.value)} /></td>
-                                    <td>${calculateTotal(item.quantity, item.rate)}</td>
+                                    <td>{currentCurrencySymbol}{calculateTotal(item.quantity, item.rate)}</td>
                                     <td><button type="button" className="btn-remove" onClick={() => handleRemoveItem(index)}>&times;</button></td>
                                 </tr>
                             ))}
@@ -162,15 +157,15 @@ const InvoiceForm = () => {
 
                 <div className="totals-section">
                     <div className="totals">
-                        <div className="total-row"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-                        <div className="total-row"><span>Tax ({(taxRate * 100).toFixed(0)}%)</span><span>${tax.toFixed(2)}</span></div>
-                        <div className="total-row grand-total"><span>Total</span><span>${total.toFixed(2)}</span></div>
+                        <div className="total-row"><span>Subtotal</span><span>{currentCurrencySymbol}{subtotal.toFixed(2)}</span></div>
+                        <div className="total-row"><span>Tax ({(taxRate * 100).toFixed(0)}%)</span><span>{currentCurrencySymbol}{tax.toFixed(2)}</span></div>
+                        <div className="total-row grand-total"><span>Total</span><span>{currentCurrencySymbol}{total.toFixed(2)}</span></div>
                     </div>
                 </div>
 
                 <div className="form-footer">
                     <label>Notes</label>
-                    <textarea name="notes" value={formData.notes} onChange={(e) => setFormData(prev => ({...prev, notes: e.target.value}))} placeholder="Thanks for your business!"></textarea>
+                    <textarea name="notes" value={formData.notes} onChange={(e) => handleInputChange(null, e)} placeholder="Thanks for your business!"></textarea>
                 </div>
             </form>
         </div>

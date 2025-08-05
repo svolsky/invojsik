@@ -1,0 +1,41 @@
+/* frontend/src/Settings.css */
+.settings-sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-left: 1px solid #e9ecef;
+    height: 100vh; /* Full height */
+}
+
+.settings-sidebar h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #343a40;
+    font-size: 1.5em;
+}
+
+.settings-group {
+    margin-bottom: 20px;
+}
+
+.settings-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.settings-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 1em;
+}
+
+.settings-group select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
