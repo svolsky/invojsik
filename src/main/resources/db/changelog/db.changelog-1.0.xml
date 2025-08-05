@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="gemini">
+        <createTable tableName="company">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ico" type="VARCHAR(255)"/>
+            <column name="dic" type="VARCHAR(255)"/>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="street_address" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="country" type="VARCHAR(255)"/>
+            <column name="zip" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="payment_method">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="bank_name" type="VARCHAR(255)"/>
+            <column name="account_number" type="VARCHAR(255)"/>
+            <column name="iban" type="VARCHAR(255)"/>
+            <column name="bic_swift" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="invoice">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(255)"/>
+            <column name="variable_symbol" type="VARCHAR(255)"/>
+            <column name="issue_date" type="DATE"/>
+            <column name="due_date" type="DATE"/>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_invoice_company" references="company(id)"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_invoice_client" references="company(id)"/>
+            </column>
+            <column name="payment_method_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_invoice_payment_method" references="payment_method(id)"/>
+            </column>
+            <column name="additional_note" type="TEXT"/>
+        </createTable>
+
+        <createTable tableName="items">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="cost" type="DECIMAL(19, 2)"/>
+            <column name="qty" type="INT"/>
+            <column name="price" type="DECIMAL(19, 2)"/>
+            <column name="invoice_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_items_invoice" references="invoice(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
