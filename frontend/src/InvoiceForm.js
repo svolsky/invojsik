@@ -17,6 +17,11 @@ const getInitialFormData = () => ({
     },
     items: [{ description: '', quantity: 1, rate: 0 }],
     notes: 'Thanks for your business!',
+    paymentDetails: {
+        bankName: '',
+        iban: '',
+        swift: ''
+    }
 });
 
 const currencySymbols = {
@@ -33,7 +38,12 @@ const InvoiceForm = ({ currency }) => {
                 const parsed = JSON.parse(savedData);
                 // Убедимся, что валюта из настроек имеет приоритет
                 parsed.currency = currency;
-                return parsed;
+                // Merge with initial form data to ensure new fields like paymentDetails are present
+                return { ...getInitialFormData(), ...parsed,
+                    billFrom: { ...getInitialFormData().billFrom, ...parsed.billFrom },
+                    billTo: { ...getInitialFormData().billTo, ...parsed.billTo },
+                    paymentDetails: { ...getInitialFormData().paymentDetails, ...parsed.paymentDetails }
+                };
             } catch (error) {
                 console.error("Error parsing invoice data from localStorage", error);
             }
@@ -56,7 +66,7 @@ const InvoiceForm = ({ currency }) => {
 
     const handleInputChange = (section, e) => {
         const { name, value } = e.target;
-        if (section === 'billFrom' || section === 'billTo') {
+        if (section === 'billFrom' || section === 'billTo' || section === 'paymentDetails') {
             setFormData(prev => ({ ...prev, [section]: { ...prev[section], [name]: value } }));
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
@@ -76,6 +86,11 @@ const InvoiceForm = ({ currency }) => {
 
     const handleRemoveItem = (index) => {
         setFormData(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
+    };
+
+    const handleGeneratePdf = () => {
+        console.log("Generate PDF clicked!");
+        // Here you would typically send formData to your backend to generate the PDF
     };
 
     const calculateTotal = (quantity, rate) => {
@@ -119,7 +134,15 @@ const InvoiceForm = ({ currency }) => {
                     </div>
                 </div>
 
-                <div className="form-row">
+                <div className="form-row-split">
+                    <div className="form-group payment-details">
+                        <label>Payment Details</label>
+                        <div className="bill-from-grid">
+                            <div className="form-group grid-col-span-2"><input type="text" name="bankName" placeholder="Bank Name" value={formData.paymentDetails.bankName} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="text" name="iban" placeholder="IBAN" value={formData.paymentDetails.iban} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="text" name="swift" placeholder="SWIFT/BIC" value={formData.paymentDetails.swift} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
+                        </div>
+                    </div>
                     <div className="form-group bill-to">
                         <label>Bill To</label>
                         <div className="bill-from-grid">
@@ -153,6 +176,7 @@ const InvoiceForm = ({ currency }) => {
 
                 <div className="form-actions">
                     <button type="button" className="btn-add-item" onClick={handleAddItem}>Add Item</button>
+                    <button type="button" className="btn-generate-pdf" onClick={handleGeneratePdf}>Generate PDF</button>
                 </div>
 
                 <div className="totals-section">
