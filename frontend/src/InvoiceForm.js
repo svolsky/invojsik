@@ -88,9 +88,28 @@ const InvoiceForm = ({ currency }) => {
         setFormData(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
     };
 
-    const handleGeneratePdf = () => {
-        console.log("Generate PDF clicked!");
-        // Here you would typically send formData to your backend to generate the PDF
+    const handleGeneratePdf = async () => {
+        try {
+            const response = await fetch('/api/invoices/generate-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                window.open(url, '_blank');
+            } else {
+                console.error('Failed to generate PDF:', response.statusText);
+                alert('Failed to generate PDF. Please check the console for more details.');
+            }
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Error generating PDF. Please check the console for more details.');
+        }
     };
 
     const calculateTotal = (quantity, rate) => {
