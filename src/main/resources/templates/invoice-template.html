@@ -4,12 +4,25 @@
     <meta charset="UTF-8" />
     <title>Invoice</title>
     <style>
-        body { font-family: sans-serif; }
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 40px; }
-        .details, .items-table { width: 100%; margin-bottom: 20px; }
-        .details td, .items-table td, .items-table th { padding: 8px; border: 1px solid #ddd; }
-        .items-table th { background-color: #f2f2f2; }
+        body { font-family: sans-serif; margin: 0; padding: 0; font-size: 12px; }
+        .container { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 20mm; box-sizing: border-box; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .invoice-info { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .invoice-info div { width: 48%; }
+        .invoice-info p { margin: 2px 0; }
+        .section-title { font-weight: bold; margin-top: 15px; margin-bottom: 5px; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table th, table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        table th { background-color: #f2f2f2; }
+        .items-table th:nth-child(1) { width: 50%; }
+        .items-table th:nth-child(2), .items-table th:nth-child(3), .items-table th:nth-child(4) { width: 15%; }
+        .totals-section { width: 30%; float: right; margin-top: 20px; }
+        .totals-row { display: flex; justify-content: space-between; padding: 5px 0; }
+        .totals-row span:first-child { font-weight: bold; }
+        .grand-total { font-size: 14px; font-weight: bold; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
+        .notes { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; }
+        .notes p { margin: 2px 0; }
     </style>
 </head>
 <body>
@@ -19,41 +32,81 @@
         <p>Invoice #: <span th:text="${invoice.invoiceNumber}"></span></p>
     </div>
 
-    <table class="details">
-        <tr>
-            <td><strong>Bill From:</strong><br/>
-                <span th:text="${invoice.billFrom.companyName}"></span><br/>
-                <span th:text="${invoice.billFrom.streetAddress}"></span><br/>
-                <span th:text="${invoice.billFrom.city}"></span>, <span th:text="${invoice.billFrom.zipCode}"></span><br/>
-                <span th:text="${invoice.billFrom.country}"></span>
-            </td>
-            <td><strong>Bill To:</strong><br/>
-                <span th:text="${invoice.billTo.companyName}"></span><br/>
-                <span th:text="${invoice.billTo.streetAddress}"></span><br/>
-                <span th:text="${invoice.billTo.city}"></span>, <span th:text="${invoice.billTo.zipCode}"></span><br/>
-                <span th:text="${invoice.billTo.country}"></span>
-            </td>
-        </tr>
-    </table>
+    <div class="invoice-info">
+        <div>
+            <div class="section-title">Bill From:</div>
+            <p th:text="${invoice.billFrom.companyName}"></p>
+            <p>ICO: <span th:text="${invoice.billFrom.ico}"></span></p>
+            <p>DIC: <span th:text="${invoice.billFrom.dic}"></span></p>
+            <p th:text="${invoice.billFrom.streetAddress}"></p>
+            <p th:text="${invoice.billFrom.city} + ', ' + ${invoice.billFrom.zipCode}"></p>
+            <p th:text="${invoice.billFrom.country}"></p>
+        </div>
+        <div>
+            <div class="section-title">Invoice Dates:</div>
+            <p>Invoice Date: <span th:text="${invoice.invoiceDate}"></span></p>
+            <p>Due Date: <span th:text="${invoice.dueDate}"></span></p>
+            <p>Date of Taxable Supply: <span th:text="${invoice.dateOfTaxableSupply}"></span></p>
+        </div>
+    </div>
 
+    <div class="invoice-info">
+        <div>
+            <div class="section-title">Payment Details:</div>
+            <p>Bank Name: <span th:text="${invoice.paymentDetails?.bankName ?: ''}"></span></p>
+            <p>IBAN: <span th:text="${invoice.paymentDetails?.iban ?: ''}"></span></p>
+            <p>SWIFT/BIC: <span th:text="${invoice.paymentDetails?.swift ?: ''}"></span></p>
+        </div>
+        <div>
+            <div class="section-title">Bill To:</div>
+            <p th:text="${invoice.billTo.companyName}"></p>
+            <p>ICO: <span th:text="${invoice.billTo.ico}"></span></p>
+            <p>DIC: <span th:text="${invoice.billTo.dic}"></span></p>
+            <p th:text="${invoice.billTo.streetAddress}"></p>
+            <p th:text="${invoice.billTo.city} + ', ' + ${invoice.billTo.zipCode}"></p>
+            <p th:text="${invoice.billTo.country}"></p>
+        </div>
+    </div>
+
+    <div class="section-title">Items:</div>
     <table class="items-table">
         <thead>
         <tr>
             <th>Description</th>
             <th>Quantity</th>
-            <th>Rate</th>
-            <th>Total</th>
+            <th>Rate (<span th:text="${invoice.currency}"></span>)</th>
+            <th>Total (<span th:text="${invoice.currency}"></span>)</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="item : ${invoice.items}">
             <td th:text="${item.description}"></td>
             <td th:text="${item.quantity}"></td>
-            <td th:text="${item.rate}"></td>
-            <td th:text="${item.quantity * item.rate}"></td>
+            <td th:text="${#numbers.formatDecimal(item.rate, 0, 'POINT', 2, 'COMMA')}"></td>
+            <td th:text="${#numbers.formatDecimal(item.quantity * item.rate, 0, 'POINT', 2, 'COMMA')}"></td>
         </tr>
         </tbody>
     </table>
+
+    <div class="totals-section">
+        <div class="totals-row">
+            <span>Subtotal:</span>
+            <span th:with="subtotal=${#aggregates.sum(invoice.items.![quantity * rate])}" th:text="${#numbers.formatDecimal(subtotal, 0, 'POINT', 2, 'COMMA')} + ' ' + ${invoice.currency}"></span>
+        </div>
+        <div class="totals-row">
+            <span>Tax (0%):</span>
+            <span>0.00 <span th:text="${invoice.currency}"></span></span>
+        </div>
+        <div class="totals-row grand-total">
+            <span>Total:</span>
+            <span th:with="total=${#aggregates.sum(invoice.items.![quantity * rate])}" th:text="${#numbers.formatDecimal(total, 0, 'POINT', 2, 'COMMA')} + ' ' + ${invoice.currency}"></span>
+        </div>
+    </div>
+
+    <div class="notes">
+        <div class="section-title">Notes:</div>
+        <p th:text="${invoice.notes}"></p>
+    </div>
 
 </div>
 </body>
