@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Invoice</title>
+    <style>
+        body { font-family: sans-serif; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .details, .items-table { width: 100%; margin-bottom: 20px; }
+        .details td, .items-table td, .items-table th { padding: 8px; border: 1px solid #ddd; }
+        .items-table th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>INVOICE</h1>
+        <p>Invoice #: <span th:text="${invoice.invoiceNumber}"></span></p>
+    </div>
+
+    <table class="details">
+        <tr>
+            <td><strong>Bill From:</strong><br/>
+                <span th:text="${invoice.billFrom.companyName}"></span><br/>
+                <span th:text="${invoice.billFrom.streetAddress}"></span><br/>
+                <span th:text="${invoice.billFrom.city}"></span>, <span th:text="${invoice.billFrom.zipCode}"></span><br/>
+                <span th:text="${invoice.billFrom.country}"></span>
+            </td>
+            <td><strong>Bill To:</strong><br/>
+                <span th:text="${invoice.billTo.companyName}"></span><br/>
+                <span th:text="${invoice.billTo.streetAddress}"></span><br/>
+                <span th:text="${invoice.billTo.city}"></span>, <span th:text="${invoice.billTo.zipCode}"></span><br/>
+                <span th:text="${invoice.billTo.country}"></span>
+            </td>
+        </tr>
+    </table>
+
+    <table class="items-table">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${invoice.items}">
+            <td th:text="${item.description}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.rate}"></td>
+            <td th:text="${item.quantity * item.rate}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
