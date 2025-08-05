@@ -40,3 +40,17 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+task buildFrontend(type: Exec) {
+    workingDir 'frontend'
+    commandLine 'npm', 'install'
+    commandLine 'npm', 'run', 'build'
+}
+
+task copyFrontend(type: Copy) {
+    from "frontend/build"
+    into "build/resources/main/static"
+}
+
+copyFrontend.dependsOn buildFrontend
+processResources.dependsOn copyFrontend
