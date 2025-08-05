@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import InvoiceForm from './InvoiceForm';
 import Settings from './Settings';
 import './App.css';
