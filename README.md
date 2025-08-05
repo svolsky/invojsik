@@ -28,3 +28,19 @@ A simple web application for generating invoices.
 ## Usage
 
 After starting both parts of the application, open `http://localhost:3000` in your browser. You will be able to create and generate invoices.
+
+## Building Docker Image
+
+To build the Docker image for the application, navigate to the project root directory and run the following command:
+
+```bash
+./gradlew bootBuildImage
+```
+
+This command will build the Spring Boot application and then create a Docker image. The image name will be `invojsik:0.0.1-SNAPSHOT` (or whatever your `group` and `version` are in `build.gradle`).
+
+To run the Docker image:
+
+```bash
+docker run --rm -p 8080:8080 invojsik:0.0.1-SNAPSHOT
+```
