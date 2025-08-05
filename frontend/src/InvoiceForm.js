@@ -195,7 +195,6 @@ const InvoiceForm = ({ currency }) => {
 
                 <div className="form-actions">
                     <button type="button" className="btn-add-item" onClick={handleAddItem}>Add Item</button>
-                    <button type="button" className="btn-generate-pdf" onClick={handleGeneratePdf}>Generate PDF</button>
                 </div>
 
                 <div className="totals-section">
@@ -209,6 +208,9 @@ const InvoiceForm = ({ currency }) => {
                 <div className="form-footer">
                     <label>Notes</label>
                     <textarea name="notes" value={formData.notes} onChange={(e) => handleInputChange(null, e)} placeholder="Thanks for your business!"></textarea>
+                </div>
+                <div className="form-actions-bottom">
+                    <button type="button" className="btn-generate-pdf" onClick={handleGeneratePdf}>Generate PDF</button>
                 </div>
             </form>
         </div>

@@ -189,7 +189,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-    margin-left: 10px;
+    margin-top: 15px;
 }
 
 .btn-generate-pdf:hover {
@@ -234,4 +234,14 @@
 .form-footer textarea {
     width: 100%;
     min-height: 80px;
+}
+
+.form-actions-bottom {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.form-actions-bottom .btn-generate-pdf {
+    margin-top: 0;
 }
