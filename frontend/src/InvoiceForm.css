@@ -1,0 +1,218 @@
+/* frontend/src/InvoiceForm.css */
+.invoice-form-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.invoice-form h1 {
+    font-size: 2.5em;
+    color: #222;
+    margin: 0;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.invoice-number {
+    display: flex;
+    align-items: center;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.invoice-number label {
+    padding: 10px 15px;
+    background-color: #e9e9e9;
+    font-weight: bold;
+    color: #555;
+}
+
+.invoice-number input {
+    border: none;
+    padding: 10px;
+    width: 150px;
+    font-size: 1em;
+}
+
+.invoice-number input:focus {
+    outline: none;
+}
+
+.form-row-split {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input[type="date"],
+.form-group input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+.bill-from-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 450px;
+}
+
+.grid-col-span-2 {
+    grid-column: span 2;
+}
+
+.form-group.bill-from > label {
+    margin-bottom: 15px;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    width: 300px;
+}
+
+.details-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bill-to {
+    margin-bottom: 30px;
+}
+
+.items-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.items-table th,
+.items-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.items-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #333;
+}
+
+.items-table input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.items-table td:nth-child(2), /* Quantity */
+.items-table td:nth-child(3) { /* Rate */
+    width: 15%;
+}
+.items-table td:nth-child(4) { /* Total */
+    width: 15%;
+}
+.items-table td:nth-child(5) { /* Remove button */
+    width: 5%;
+    text-align: center;
+}
+
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-remove:hover {
+    color: #cc0000;
+}
+
+.form-actions {
+    margin-top: 20px;
+}
+
+.btn-add-item {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.btn-add-item:hover {
+    background-color: #0b7dda;
+}
+
+.totals-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.totals {
+    width: 300px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 1.1em;
+}
+
+.total-row span:last-child {
+    font-weight: bold;
+}
+
+.total-row.grand-total {
+    font-size: 1.4em;
+    font-weight: bold;
+    border-top: 2px solid #ddd;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.form-footer {
+    margin-top: 40px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.form-footer textarea {
+    width: 100%;
+    min-height: 80px;
+}
