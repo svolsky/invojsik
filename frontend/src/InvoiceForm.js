@@ -57,7 +57,7 @@ const InvoiceForm = ({ currency }) => {
         if (formData.currency !== currency) {
             setFormData(prev => ({ ...prev, currency }));
         }
-    }, [currency]);
+    }, [currency, formData.currency]);
 
     useEffect(() => {
         // Сохраняем в localStorage при любом изменении данных
