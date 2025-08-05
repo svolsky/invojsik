@@ -1,27 +1,30 @@
 # Invojsik
 
-Invoice generator for Slovakia.
+A simple web application for generating invoices.
 
-## Сборка проекта
+## Running the Application
 
-Проект состоит из двух основных частей:
+1.  **Start the Backend:**
+    ```bash
+    ./gradlew bootRun
+    ```
+    The backend will be available at `http://localhost:8080`.
 
-*   **Бэкенд:** Spring Boot приложение, которое предоставляет REST API.
-*   **Фронтенд:** Одностраничное приложение (SPA), написанное на React.
+2  **Start the Frontend:**
+    Navigate to the `frontend` directory:
+    ```bash
+    cd frontend
+    ```
+    Install dependencies:
+    ```bash
+    npm install
+    ```
+    Start the React application:
+    ```bash
+    npm start
+    ```
+    The frontend will be available at `http://localhost:3000`.
 
-### Как это работает
+## Usage
 
-При сборке проекта с помощью Gradle, происходит следующее:
-
-1.  **Сборка фронтенда:** Gradle выполняет команды `npm install` и `npm run build` в директории `frontend`. Это создает оптимизированную для продакшена сборку React-приложения в папке `frontend/build`.
-2.  **Копирование файлов:** Содержимое папки `frontend/build` копируется в `build/resources/main/static`.
-3.  **Сборка JAR:** Spring Boot приложение собирается в один исполняемый JAR-файл, который включает в себя все статические файлы фронтенда.
-
-Таким образом, для развертывания приложения достаточно одного JAR-файла.
-
-### Полезные ссылки
-
-*   [Spring Boot](https://spring.io/projects/spring-boot)
-*   [React](https://react.dev/)
-*   [Gradle](https://gradle.org/)
-*   [Liquibase](https://www.liquibase.org/)
+After starting both parts of the application, open `http://localhost:3000` in your browser. You will be able to create and generate invoices.
