@@ -10,7 +10,7 @@ A simple web application for generating invoices.
     ```
     The backend will be available at `http://localhost:8080`.
 
-2  **Start the Frontend:**
+2.  **Start the Frontend:**
     Navigate to the `frontend` directory:
     ```bash
     cd frontend
