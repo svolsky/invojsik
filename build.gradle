@@ -34,7 +34,6 @@ dependencies {
 	implementation 'org.liquibase:liquibase-core'
 	// For PDF Generation
     implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
-//    implementation 'com.openhtmltopdf:openhtmltopdf-java:1.0.10'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -58,10 +57,10 @@ tasks.named('test') {
 //    commandLine 'npm', 'run', 'build'
 //}
 //
-//task copyFrontend(type: Copy) {
-//    from "frontend/build"
-//    into "build/resources/main/static"
-//}
+tasks.register('copyFrontend', Copy) {
+	from "frontend/build"
+	into "build/resources/main/static"
+}
 //
 //copyFrontend.dependsOn buildFrontend
 //processResources.dependsOn copyFrontend
