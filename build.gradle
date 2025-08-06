@@ -65,4 +65,4 @@ tasks.register('copyFrontend', Copy) {
 }
 
 copyFrontend.dependsOn buildFrontend
-//processResources.dependsOn copyFrontend
+processResources.dependsOn copyFrontend
