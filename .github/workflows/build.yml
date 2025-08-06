@@ -25,11 +25,11 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
-
-      - name: Copy frontend to backend build resources
-        run: |
-          mkdir -p build/resources/main/static
-          cp -r frontend/build/* build/resources/main/static/
+#
+#      - name: Copy frontend to backend build resources
+#        run: |
+#          mkdir -p build/resources/main/static
+#          cp -r frontend/build/* build/resources/main/static/
 
       # BUILD BACK
       - name: Setup Java
