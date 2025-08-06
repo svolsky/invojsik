@@ -4,6 +4,10 @@ A simple web application for generating invoices.
 
 ## Running the Application
 
+Requirements:
+- jdk 21
+- node v16.20.1
+
 1.  **Start the Backend:**
     ```bash
     ./gradlew bootRun
@@ -44,3 +48,9 @@ To run the Docker image:
 ```bash
 docker run --rm -p 8080:8080 invojsik:0.0.1-SNAPSHOT
 ```
+
+
+## Implementation details
+
+To properly display symbols like Č, Š in pdf we must use fonts witch supports this. 
+For example [DejaVuSans](https://dejavu-fonts.github.io/)
