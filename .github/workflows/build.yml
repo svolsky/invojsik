@@ -41,6 +41,10 @@ jobs:
       - name: Build backend
         run: ./gradlew build --no-daemon
 
+      - name: Build Docker image
+        run: docker build -t ${{ vars.DOCKER_USERNAME }}/invojsik:latest .
+
+
 #      - name: Setup Docker Buildx
 #        uses: docker/setup-buildx-action@v3
 #

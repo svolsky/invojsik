@@ -38,17 +38,16 @@ After starting both parts of the application, open `http://localhost:3000` in yo
 To build the Docker image for the application, navigate to the project root directory and run the following command:
 
 ```bash
-./gradlew bootBuildImage
+docker compose build invojsik
 ```
 
-This command will build the Spring Boot application and then create a Docker image. The image name will be `invojsik:0.0.1-SNAPSHOT` (or whatever your `group` and `version` are in `build.gradle`).
+This command will create a Docker image. The image name will be `invojsik:latest`.
 
 To run the Docker image:
 
 ```bash
-docker run --rm -p 8080:8080 invojsik:0.0.1-SNAPSHOT
+docker compose up invojsik
 ```
-
 
 ## Implementation details
 

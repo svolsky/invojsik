@@ -49,6 +49,10 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.named('jar') {
+	enabled = false
+}
+
 tasks.register('buildFrontend', Exec) {
 	workingDir 'frontend'
 	commandLine 'npm', 'install'

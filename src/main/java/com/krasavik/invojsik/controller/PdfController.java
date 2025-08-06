@@ -2,6 +2,8 @@ package com.krasavik.invojsik.controller;
 
 import com.krasavik.invojsik.dto.InvoiceDataDTO;
 import com.krasavik.invojsik.service.PdfGenerationService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/invoices")
 public class PdfController {
@@ -37,7 +40,7 @@ public class PdfController {
                     .body(pdfBytes);
 
         } catch (IOException e) {
-            // Обработка ошибок
+            log.error("Error generating invoice: {}", e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
