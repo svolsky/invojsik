@@ -1,4 +1,4 @@
-name: Build
+name: Build and Push Docker Image
 
 on:
   push:
@@ -12,18 +12,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # BUILD FRONT
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Copy frontend to backend build resources
+        run: |
+          mkdir -p build/resources/main/static
+          cp -r frontend/build/* build/resources/main/static/
+
+      # BUILD BACK
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Build all
+      - name: Build backend
         run: ./gradlew build --no-daemon
 
 #      - name: Setup Docker Buildx
