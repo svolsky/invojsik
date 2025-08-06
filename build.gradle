@@ -49,18 +49,16 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.register('buildFrontend', Exec) {
+	workingDir 'frontend'
+	commandLine 'npm', 'install'
+	commandLine 'npm', 'run', 'build'
+}
 
-//
-//task buildFrontend(type: Exec) {
-//    workingDir 'frontend'
-//    commandLine 'npm', 'install'
-//    commandLine 'npm', 'run', 'build'
-//}
-//
 tasks.register('copyFrontend', Copy) {
 	from "frontend/build"
 	into "build/resources/main/static"
 }
-//
-//copyFrontend.dependsOn buildFrontend
-//processResources.dependsOn copyFrontend
+
+copyFrontend.dependsOn buildFrontend
+processResources.dependsOn copyFrontend
