@@ -53,8 +53,12 @@
 
 .form-row-split {
     display: flex;
-    justify-content: space-between;
+    gap: 20px; /* Add gap between columns */
     margin-bottom: 20px;
+}
+
+.form-row-split > div {
+    flex: 1; /* Make columns take equal space */
 }
 
 .form-group {
@@ -81,7 +85,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    width: 450px;
 }
 
 .grid-col-span-2 {
@@ -94,7 +97,7 @@
 
 .form-group textarea {
     min-height: 100px;
-    width: 300px;
+    width: 100%; /* Ensure textarea takes full width */
 }
 
 .details-group {
@@ -109,6 +112,22 @@
 
 .payment-details {
     margin-bottom: 30px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+    width: auto; /* Override default input width */
+}
+
+.checkbox-group label {
+    margin-bottom: 0; /* Reset margin for checkbox label */
+    font-weight: normal;
 }
 
 .items-table table {
