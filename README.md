@@ -3,7 +3,12 @@
 A simple web application for generating invoices. 
 To generate invoice go to [invojsik.sk](https://invojsik.sk) it's free (and open source)
 
-## Running the Application
+## How to run from docker image
+
+It's possible to run app locally in docker. see details on dockerhub: https://hub.docker.com/r/svolskiy/invojsik
+
+
+## How to build and from code
 
 Requirements:
 - jdk 21
@@ -30,11 +35,11 @@ Requirements:
     ```
     The frontend will be available at `http://localhost:3000`.
 
-## Usage
+### Usage
 
 After starting both parts of the application, open `http://localhost:3000` in your browser. You will be able to create and generate invoices.
 
-## Building Docker Image
+### Building Docker Image
 
 To build the Docker image for the application, navigate to the project root directory and run the following command:
 
