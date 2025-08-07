@@ -36,7 +36,7 @@ const getInitialFormData = () => {
         dateOfTaxableSupply: formattedTaxableSupplyDate,
     currency: 'EUR', // Валюта по умолчанию
     billFrom: {
-        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
+        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: 'Slovakia'
     },
     billTo: {
         companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
@@ -48,7 +48,7 @@ const getInitialFormData = () => {
         iban: '',
         swift: ''
     },
-    isVatExempt: false // New field for VAT exemption
+    isVatExempt: true // New field for VAT exemption
     };
 };
 
