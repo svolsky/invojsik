@@ -36,10 +36,10 @@ const getInitialFormData = () => {
         dateOfTaxableSupply: formattedTaxableSupplyDate,
     currency: 'EUR', // Валюта по умолчанию
     billFrom: {
-        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: 'Slovakia'
+        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: 'Slovakia', email: '', phone: ''
     },
     billTo: {
-        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
+        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: '', email: '', phone: ''
     },
     items: [{ description: '', quantity: 1, rate: 0 }],
     notes: '',
@@ -171,12 +171,14 @@ const InvoiceForm = ({ currency }) => {
                         <label>Bill From</label>
                         <div className="bill-from-grid">
                             <div className="form-group grid-col-span-2"><input type="text" name="companyName" placeholder="Company Name" value={formData.billFrom.companyName} onChange={(e) => handleInputChange('billFrom', e)} /></div>
-                            <div className="form-group"><input type="text" name="ico" placeholder="Tax ID" value={formData.billFrom.ico} onChange={(e) => handleInputChange('billFrom', e)} /></div>
-                            <div className="form-group"><input type="text" name="dic" placeholder="VAT ID" value={formData.billFrom.dic} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group"><input type="text" name="ico" placeholder="ID Number" value={formData.billFrom.ico} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group"><input type="text" name="dic" placeholder="VAT Number" value={formData.billFrom.dic} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="streetAddress" placeholder="Street Address" value={formData.billFrom.streetAddress} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group"><input type="text" name="city" placeholder="City" value={formData.billFrom.city} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group"><input type="text" name="zipCode" placeholder="Zip Code" value={formData.billFrom.zipCode} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="country" placeholder="Country" value={formData.billFrom.country} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="email" name="email" placeholder="Email" value={formData.billFrom.email} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="tel" name="phone" placeholder="Phone" value={formData.billFrom.phone} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                         </div>
                     </div>
                     <div className="details-group">
@@ -203,12 +205,14 @@ const InvoiceForm = ({ currency }) => {
                         <label>Bill To</label>
                         <div className="bill-from-grid">
                             <div className="form-group grid-col-span-2"><input type="text" name="companyName" placeholder="Company Name" value={formData.billTo.companyName} onChange={(e) => handleInputChange('billTo', e)} /></div>
-                            <div className="form-group"><input type="text" name="ico" placeholder="Tax ID" value={formData.billTo.ico} onChange={(e) => handleInputChange('billTo', e)} /></div>
-                            <div className="form-group"><input type="text" name="dic" placeholder="VAT ID" value={formData.billTo.dic} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group"><input type="text" name="ico" placeholder="ID Number" value={formData.billTo.ico} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group"><input type="text" name="dic" placeholder="VAT Number" value={formData.billTo.dic} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="streetAddress" placeholder="Street Address" value={formData.billTo.streetAddress} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group"><input type="text" name="city" placeholder="City" value={formData.billTo.city} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group"><input type="text" name="zipCode" placeholder="Zip Code" value={formData.billTo.zipCode} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="country" placeholder="Country" value={formData.billTo.country} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="email" name="email" placeholder="Email" value={formData.billTo.email} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="tel" name="phone" placeholder="Phone" value={formData.billTo.phone} onChange={(e) => handleInputChange('billTo', e)} /></div>
                         </div>
                     </div>
                 </div>

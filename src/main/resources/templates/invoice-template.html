@@ -122,20 +122,24 @@
         <div class="column">
             <h3>Bill From</h3>
             <p th:text="${invoice.billFrom.companyName}"></p>
-            <p th:if="${invoice.billFrom.taxId != null and invoice.billFrom.taxId != ''}">IČO: <span th:text="${invoice.billFrom.taxId}"></span></p>
-            <p th:if="${invoice.billFrom.vatId != null and invoice.billFrom.vatId != ''}">DIČ: <span th:text="${invoice.billFrom.vatId}"></span></p>
+            <p th:if="${invoice.billFrom.idNumber != null and invoice.billFrom.idNumber != ''}">IČO: <span th:text="${invoice.billFrom.idNumber}"></span></p>
+            <p th:if="${invoice.billFrom.vatNumber != null and invoice.billFrom.vatNumber != ''}">DIČ: <span th:text="${invoice.billFrom.vatNumber}"></span></p>
             <p th:text="${invoice.billFrom.streetAddress}"></p>
             <p th:text="${invoice.billFrom.city} + ', ' + ${invoice.billFrom.zipCode}"></p>
             <p th:text="${invoice.billFrom.country}"></p>
+            <p th:if="${invoice.billFrom.email != null and invoice.billFrom.email != ''}">Email: <span th:text="${invoice.billFrom.email}"></span></p>
+            <p th:if="${invoice.billFrom.phone != null and invoice.billFrom.phone != ''}">Phone: <span th:text="${invoice.billFrom.phone}"></span></p>
         </div>
         <div class="column">
             <h3>Bill To</h3>
             <p th:text="${invoice.billTo.companyName}"></p>
-            <p th:if="${invoice.billTo.taxId != null and invoice.billTo.taxId != ''}">IČO: <span th:text="${invoice.billTo.taxId}"></span></p>
-            <p th:if="${invoice.billTo.vatId != null and invoice.billTo.vatId != ''}">DIČ: <span th:text="${invoice.billTo.vatId}"></span></p>
+            <p th:if="${invoice.billTo.idNumber != null and invoice.billTo.idNumber != ''}">IČO: <span th:text="${invoice.billTo.idNumber}"></span></p>
+            <p th:if="${invoice.billTo.vatNumber != null and invoice.billTo.vatNumber != ''}">DIČ: <span th:text="${invoice.billTo.vatNumber}"></span></p>
             <p th:text="${invoice.billTo.streetAddress}"></p>
             <p th:text="${invoice.billTo.city} + ', ' + ${invoice.billTo.zipCode}"></p>
             <p th:text="${invoice.billTo.country}"></p>
+            <p th:if="${invoice.billTo.email != null and invoice.billTo.email != ''}">Email: <span th:text="${invoice.billTo.email}"></span></p>
+            <p th:if="${invoice.billTo.phone != null and invoice.billTo.phone != ''}">Phone: <span th:text="${invoice.billTo.phone}"></span></p>
         </div>
     </div>
 

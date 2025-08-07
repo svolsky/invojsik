@@ -73,7 +73,9 @@
 }
 
 .form-group input[type="date"],
-.form-group input[type="text"] {
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

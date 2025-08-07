@@ -15,10 +15,12 @@ public class Address {
     private Long id;
 
     private String companyName;
-    private String taxId;
-    private String vatId;
+    private String idNumber;
+    private String vatNumber;
     private String streetAddress;
     private String city;
     private String zipCode;
     private String country;
+    private String email;
+    private String phone;
 }

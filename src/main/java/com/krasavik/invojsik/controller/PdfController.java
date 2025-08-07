@@ -111,12 +111,14 @@ public class PdfController {
     private Address mapAddressDtoToEntity(InvoiceDataDTO.AddressDTO dto) {
         Address entity = new Address();
         entity.setCompanyName(dto.getCompanyName());
-        entity.setTaxId(dto.getTaxId());
-        entity.setVatId(dto.getVatId());
+        entity.setIdNumber(dto.getIdNumber());
+        entity.setVatNumber(dto.getVatNumber());
         entity.setStreetAddress(dto.getStreetAddress());
         entity.setCity(dto.getCity());
         entity.setZipCode(dto.getZipCode());
         entity.setCountry(dto.getCountry());
+        entity.setEmail(dto.getEmail());
+        entity.setPhone(dto.getPhone());
         return entity;
     }
 
