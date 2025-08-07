@@ -1,6 +1,7 @@
 # Invojsik
 
-A simple web application for generating invoices.
+A simple web application for generating invoices. 
+To generate invoice go to [invojsik.sk](https://invojsik.sk) it's free (and open source)
 
 ## Running the Application
 
