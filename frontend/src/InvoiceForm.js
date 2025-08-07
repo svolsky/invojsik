@@ -3,11 +3,37 @@ import './InvoiceForm.css';
 
 const LOCAL_STORAGE_KEY = 'invojsik-draft';
 
-const getInitialFormData = () => ({
-    invoiceNumber: '',
-    invoiceDate: '',
-    dueDate: '',
-    dateOfTaxableSupply: '',
+const getInitialFormData = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+    const dd = String(today.getDate()).padStart(2, '0');
+    const formattedToday = `${yyyy}-${mm}-${dd}`;
+
+    const dueDate = new Date();
+    dueDate.setDate(today.getDate() + 7);
+    const dueYyyy = dueDate.getFullYear();
+    const dueMm = String(dueDate.getMonth() + 1).padStart(2, '0');
+    const dueDd = String(dueDate.getDate()).padStart(2, '0');
+    const formattedDueDate = `${dueYyyy}-${dueMm}-${dueDd}`;
+
+    const dateOfTaxableSupply = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of previous month
+    if (today.getDate() === new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()) {
+        // If today is the last day of the current month, set dateOfTaxableSupply to today
+        dateOfTaxableSupply.setDate(today.getDate());
+        dateOfTaxableSupply.setMonth(today.getMonth());
+        dateOfTaxableSupply.setFullYear(today.getFullYear());
+    }
+    const taxableYyyy = dateOfTaxableSupply.getFullYear();
+    const taxableMm = String(dateOfTaxableSupply.getMonth() + 1).padStart(2, '0');
+    const taxableDd = String(dateOfTaxableSupply.getDate()).padStart(2, '0');
+    const formattedTaxableSupplyDate = `${taxableYyyy}-${taxableMm}-${taxableDd}`;
+
+    return {
+        invoiceNumber: '',
+        invoiceDate: formattedToday,
+        dueDate: formattedDueDate,
+        dateOfTaxableSupply: formattedTaxableSupplyDate,
     currency: 'EUR', // Валюта по умолчанию
     billFrom: {
         companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
@@ -16,13 +42,15 @@ const getInitialFormData = () => ({
         companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
     },
     items: [{ description: '', quantity: 1, rate: 0 }],
-    notes: 'Thanks for your business!',
+    notes: '',
     paymentDetails: {
         bankName: '',
         iban: '',
         swift: ''
-    }
-});
+    },
+    isVatExempt: false // New field for VAT exemption
+    };
+};
 
 const currencySymbols = {
     EUR: '€',
@@ -86,6 +114,11 @@ const InvoiceForm = ({ currency }) => {
 
     const handleRemoveItem = (index) => {
         setFormData(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
+    };
+
+    const handleReset = () => {
+        setFormData({ ...getInitialFormData(), currency });
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
     };
 
     const handleGeneratePdf = async () => {
@@ -161,6 +194,10 @@ const InvoiceForm = ({ currency }) => {
                             <div className="form-group grid-col-span-2"><input type="text" name="iban" placeholder="IBAN" value={formData.paymentDetails.iban} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="swift" placeholder="SWIFT/BIC" value={formData.paymentDetails.swift} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
                         </div>
+                        <div className="form-group checkbox-group">
+                            <input type="checkbox" id="isVatExempt" name="isVatExempt" checked={formData.isVatExempt} onChange={(e) => setFormData(prev => ({ ...prev, isVatExempt: e.target.checked }))} />
+                            <label htmlFor="isVatExempt">VAT Exempt</label>
+                        </div>
                     </div>
                     <div className="form-group bill-to">
                         <label>Bill To</label>
@@ -211,6 +248,7 @@ const InvoiceForm = ({ currency }) => {
                 </div>
                 <div className="form-actions-bottom">
                     <button type="button" className="btn-generate-pdf" onClick={handleGeneratePdf}>Generate PDF</button>
+                    <button type="button" className="btn-reset" onClick={handleReset}>Reset</button>
                 </div>
             </form>
         </div>

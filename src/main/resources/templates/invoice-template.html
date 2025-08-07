@@ -186,6 +186,7 @@
     <div class="notes">
         <h3>Notes</h3>
         <p th:text="${invoice.notes}"></p>
+        <p th:if="${invoice.isVatExempt}">Dodanie je oslobodene od dane z pridanej hodnoty / Exempt of VAT</p>
     </div>
 </div>
 </body>

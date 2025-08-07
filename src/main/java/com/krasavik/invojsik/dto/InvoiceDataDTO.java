@@ -1,5 +1,6 @@
 package com.krasavik.invojsik.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.util.List;
 
@@ -15,6 +16,8 @@ public class InvoiceDataDTO {
     private List<ItemDTO> items;
     private String notes;
     private PaymentDetailsDTO paymentDetails;
+    @JsonProperty("isVatExempt")
+    private boolean isVatExempt;
 
     @Data
     public static class AddressDTO {
