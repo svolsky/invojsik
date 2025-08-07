@@ -142,9 +142,20 @@
     <div class="info-block">
         <div class="column">
             <h3>Invoice Dates</h3>
-            <p>Invoice Date: <span th:text="${invoice.invoiceDate}"></span></p>
-            <p>Due Date: <span th:text="${invoice.dueDate}"></span></p>
-            <p>Date of Taxable Supply: <span th:text="${invoice.dateOfTaxableSupply}"></span></p>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="border: none; padding: 0;">Invoice Date:</td>
+                    <td style="border: none; padding: 0;"><span th:text="${invoice.invoiceDate}"></span></td>
+                </tr>
+                <tr>
+                    <td style="border: none; padding: 0;">Due Date:</td>
+                    <td style="border: none; padding: 0;"><span th:text="${invoice.dueDate}"></span></td>
+                </tr>
+                <tr>
+                    <td style="border: none; padding: 0;">Date of Taxable Supply:</td>
+                    <td style="border: none; padding: 0;"><span th:text="${invoice.dateOfTaxableSupply}"></span></td>
+                </tr>
+            </table>
         </div>
         <div class="column">
             <h3>Payment Details</h3>
