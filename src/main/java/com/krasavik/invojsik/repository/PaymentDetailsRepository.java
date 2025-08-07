@@ -1,9 +1,9 @@
 package com.krasavik.invojsik.repository;
 
-import com.krasavik.invojsik.entity.Invoice;
+import com.krasavik.invojsik.entity.PaymentDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+public interface PaymentDetailsRepository extends JpaRepository<PaymentDetails, Long> {
 }

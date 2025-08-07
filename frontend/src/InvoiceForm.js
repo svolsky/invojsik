@@ -3,26 +3,54 @@ import './InvoiceForm.css';
 
 const LOCAL_STORAGE_KEY = 'invojsik-draft';
 
-const getInitialFormData = () => ({
-    invoiceNumber: '',
-    invoiceDate: '',
-    dueDate: '',
-    dateOfTaxableSupply: '',
+const getInitialFormData = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+    const dd = String(today.getDate()).padStart(2, '0');
+    const formattedToday = `${yyyy}-${mm}-${dd}`;
+
+    const dueDate = new Date();
+    dueDate.setDate(today.getDate() + 7);
+    const dueYyyy = dueDate.getFullYear();
+    const dueMm = String(dueDate.getMonth() + 1).padStart(2, '0');
+    const dueDd = String(dueDate.getDate()).padStart(2, '0');
+    const formattedDueDate = `${dueYyyy}-${dueMm}-${dueDd}`;
+
+    const dateOfTaxableSupply = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of previous month
+    if (today.getDate() === new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()) {
+        // If today is the last day of the current month, set dateOfTaxableSupply to today
+        dateOfTaxableSupply.setDate(today.getDate());
+        dateOfTaxableSupply.setMonth(today.getMonth());
+        dateOfTaxableSupply.setFullYear(today.getFullYear());
+    }
+    const taxableYyyy = dateOfTaxableSupply.getFullYear();
+    const taxableMm = String(dateOfTaxableSupply.getMonth() + 1).padStart(2, '0');
+    const taxableDd = String(dateOfTaxableSupply.getDate()).padStart(2, '0');
+    const formattedTaxableSupplyDate = `${taxableYyyy}-${taxableMm}-${taxableDd}`;
+
+    return {
+        invoiceNumber: '',
+        invoiceDate: formattedToday,
+        dueDate: formattedDueDate,
+        dateOfTaxableSupply: formattedTaxableSupplyDate,
     currency: 'EUR', // Валюта по умолчанию
     billFrom: {
-        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
+        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: 'Slovakia', email: '', phone: ''
     },
     billTo: {
-        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: ''
+        companyName: '', ico: '', dic: '', streetAddress: '', city: '', zipCode: '', country: '', email: '', phone: ''
     },
     items: [{ description: '', quantity: 1, rate: 0 }],
-    notes: 'Thanks for your business!',
+    notes: '',
     paymentDetails: {
         bankName: '',
         iban: '',
         swift: ''
-    }
-});
+    },
+    isVatExempt: true // New field for VAT exemption
+    };
+};
 
 const currencySymbols = {
     EUR: '€',
@@ -88,6 +116,11 @@ const InvoiceForm = ({ currency }) => {
         setFormData(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
     };
 
+    const handleReset = () => {
+        setFormData({ ...getInitialFormData(), currency });
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+    };
+
     const handleGeneratePdf = async () => {
         try {
             const response = await fetch('/api/invoices/generate-pdf', {
@@ -138,12 +171,14 @@ const InvoiceForm = ({ currency }) => {
                         <label>Bill From</label>
                         <div className="bill-from-grid">
                             <div className="form-group grid-col-span-2"><input type="text" name="companyName" placeholder="Company Name" value={formData.billFrom.companyName} onChange={(e) => handleInputChange('billFrom', e)} /></div>
-                            <div className="form-group"><input type="text" name="ico" placeholder="ICO" value={formData.billFrom.ico} onChange={(e) => handleInputChange('billFrom', e)} /></div>
-                            <div className="form-group"><input type="text" name="dic" placeholder="DIC" value={formData.billFrom.dic} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group"><input type="text" name="ico" placeholder="ID Number" value={formData.billFrom.ico} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group"><input type="text" name="dic" placeholder="VAT Number" value={formData.billFrom.dic} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="streetAddress" placeholder="Street Address" value={formData.billFrom.streetAddress} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group"><input type="text" name="city" placeholder="City" value={formData.billFrom.city} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group"><input type="text" name="zipCode" placeholder="Zip Code" value={formData.billFrom.zipCode} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="country" placeholder="Country" value={formData.billFrom.country} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="email" name="email" placeholder="Email" value={formData.billFrom.email} onChange={(e) => handleInputChange('billFrom', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="tel" name="phone" placeholder="Phone" value={formData.billFrom.phone} onChange={(e) => handleInputChange('billFrom', e)} /></div>
                         </div>
                     </div>
                     <div className="details-group">
@@ -161,17 +196,23 @@ const InvoiceForm = ({ currency }) => {
                             <div className="form-group grid-col-span-2"><input type="text" name="iban" placeholder="IBAN" value={formData.paymentDetails.iban} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="swift" placeholder="SWIFT/BIC" value={formData.paymentDetails.swift} onChange={(e) => handleInputChange('paymentDetails', e)} /></div>
                         </div>
+                        <div className="checkbox-group">
+                            <input type="checkbox" id="isVatExempt" name="isVatExempt" checked={formData.isVatExempt} onChange={(e) => setFormData(prev => ({ ...prev, isVatExempt: e.target.checked }))} />
+                            <label htmlFor="isVatExempt">VAT Exempt</label>
+                        </div>
                     </div>
                     <div className="form-group bill-to">
                         <label>Bill To</label>
                         <div className="bill-from-grid">
                             <div className="form-group grid-col-span-2"><input type="text" name="companyName" placeholder="Company Name" value={formData.billTo.companyName} onChange={(e) => handleInputChange('billTo', e)} /></div>
-                            <div className="form-group"><input type="text" name="ico" placeholder="ICO" value={formData.billTo.ico} onChange={(e) => handleInputChange('billTo', e)} /></div>
-                            <div className="form-group"><input type="text" name="dic" placeholder="DIC" value={formData.billTo.dic} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group"><input type="text" name="ico" placeholder="ID Number" value={formData.billTo.ico} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group"><input type="text" name="dic" placeholder="VAT Number" value={formData.billTo.dic} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="streetAddress" placeholder="Street Address" value={formData.billTo.streetAddress} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group"><input type="text" name="city" placeholder="City" value={formData.billTo.city} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group"><input type="text" name="zipCode" placeholder="Zip Code" value={formData.billTo.zipCode} onChange={(e) => handleInputChange('billTo', e)} /></div>
                             <div className="form-group grid-col-span-2"><input type="text" name="country" placeholder="Country" value={formData.billTo.country} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="email" name="email" placeholder="Email" value={formData.billTo.email} onChange={(e) => handleInputChange('billTo', e)} /></div>
+                            <div className="form-group grid-col-span-2"><input type="tel" name="phone" placeholder="Phone" value={formData.billTo.phone} onChange={(e) => handleInputChange('billTo', e)} /></div>
                         </div>
                     </div>
                 </div>
@@ -211,6 +252,7 @@ const InvoiceForm = ({ currency }) => {
                 </div>
                 <div className="form-actions-bottom">
                     <button type="button" className="btn-generate-pdf" onClick={handleGeneratePdf}>Generate PDF</button>
+                    <button type="button" className="btn-reset" onClick={handleReset}>Reset</button>
                 </div>
             </form>
         </div>

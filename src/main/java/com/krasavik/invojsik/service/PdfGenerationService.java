@@ -1,6 +1,6 @@
 package com.krasavik.invojsik.service;
 
-import com.krasavik.invojsik.dto.InvoiceDataDTO;
+import com.krasavik.invojsik.entity.Invoice;
 import com.openhtmltopdf.extend.FSSupplier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -24,9 +24,9 @@ public class PdfGenerationService {
         this.templateEngine = templateEngine;
     }
 
-    public byte[] generatePdfFromInvoiceData(InvoiceDataDTO invoiceData) throws IOException {
+    public byte[] generatePdfFromInvoiceData(Invoice invoice) throws IOException {
         Context context = new Context();
-        context.setVariable("invoice", invoiceData);
+        context.setVariable("invoice", invoice);
 
         String htmlContent = templateEngine.process("invoice-template", context);
 

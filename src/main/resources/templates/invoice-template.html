@@ -122,29 +122,44 @@
         <div class="column">
             <h3>Bill From</h3>
             <p th:text="${invoice.billFrom.companyName}"></p>
-            <p>IČO: <span th:text="${invoice.billFrom.ico}"></span></p>
-            <p>DIČ: <span th:text="${invoice.billFrom.dic}"></span></p>
+            <p th:if="${invoice.billFrom.idNumber != null and invoice.billFrom.idNumber != ''}">IČO: <span th:text="${invoice.billFrom.idNumber}"></span></p>
+            <p th:if="${invoice.billFrom.vatNumber != null and invoice.billFrom.vatNumber != ''}">DIČ: <span th:text="${invoice.billFrom.vatNumber}"></span></p>
             <p th:text="${invoice.billFrom.streetAddress}"></p>
             <p th:text="${invoice.billFrom.city} + ', ' + ${invoice.billFrom.zipCode}"></p>
             <p th:text="${invoice.billFrom.country}"></p>
+            <p th:if="${invoice.billFrom.email != null and invoice.billFrom.email != ''}">Email: <span th:text="${invoice.billFrom.email}"></span></p>
+            <p th:if="${invoice.billFrom.phone != null and invoice.billFrom.phone != ''}">Phone: <span th:text="${invoice.billFrom.phone}"></span></p>
         </div>
         <div class="column">
             <h3>Bill To</h3>
             <p th:text="${invoice.billTo.companyName}"></p>
-            <p>IČO: <span th:text="${invoice.billTo.ico}"></span></p>
-            <p>DIČ: <span th:text="${invoice.billTo.dic}"></span></p>
+            <p th:if="${invoice.billTo.idNumber != null and invoice.billTo.idNumber != ''}">IČO: <span th:text="${invoice.billTo.idNumber}"></span></p>
+            <p th:if="${invoice.billTo.vatNumber != null and invoice.billTo.vatNumber != ''}">DIČ: <span th:text="${invoice.billTo.vatNumber}"></span></p>
             <p th:text="${invoice.billTo.streetAddress}"></p>
             <p th:text="${invoice.billTo.city} + ', ' + ${invoice.billTo.zipCode}"></p>
             <p th:text="${invoice.billTo.country}"></p>
+            <p th:if="${invoice.billTo.email != null and invoice.billTo.email != ''}">Email: <span th:text="${invoice.billTo.email}"></span></p>
+            <p th:if="${invoice.billTo.phone != null and invoice.billTo.phone != ''}">Phone: <span th:text="${invoice.billTo.phone}"></span></p>
         </div>
     </div>
 
     <div class="info-block">
         <div class="column">
             <h3>Invoice Dates</h3>
-            <p>Invoice Date: <span th:text="${invoice.invoiceDate}"></span></p>
-            <p>Due Date: <span th:text="${invoice.dueDate}"></span></p>
-            <p>Date of Taxable Supply: <span th:text="${invoice.dateOfTaxableSupply}"></span></p>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="border: none; padding: 0;">Invoice Date:</td>
+                    <td style="border: none; padding: 0;"><span th:text="${invoice.invoiceDate}"></span></td>
+                </tr>
+                <tr>
+                    <td style="border: none; padding: 0;">Due Date:</td>
+                    <td style="border: none; padding: 0;"><span th:text="${invoice.dueDate}"></span></td>
+                </tr>
+                <tr>
+                    <td style="border: none; padding: 0;">Date of Taxable Supply:</td>
+                    <td style="border: none; padding: 0;"><span th:text="${invoice.dateOfTaxableSupply}"></span></td>
+                </tr>
+            </table>
         </div>
         <div class="column">
             <h3>Payment Details</h3>
@@ -186,6 +201,7 @@
     <div class="notes">
         <h3>Notes</h3>
         <p th:text="${invoice.notes}"></p>
+        <p th:if="${invoice.isVatExempt}">Dodanie je oslobodene od dane z pridanej hodnoty / Exempt of VAT</p>
     </div>
 </div>
 </body>
