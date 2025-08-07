@@ -46,7 +46,7 @@
             <column name="bill_to_address_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_invoice_bill_to_address" references="addresses(id)"/>
             </column>
-            <column name="notes" type="TEXT"/>
+            <column name="notes" type="VARCHAR(1024)"/>
             <column name="payment_details_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_invoice_payment_details" references="payment_details(id)"/>
             </column>
