@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class CompanyInfo {
     private String name;
-    private String ico;
+    private String taxId;
     private String address;
 }

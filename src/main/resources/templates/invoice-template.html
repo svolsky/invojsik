@@ -122,8 +122,8 @@
         <div class="column">
             <h3>Bill From</h3>
             <p th:text="${invoice.billFrom.companyName}"></p>
-            <p th:if="${invoice.billFrom.ico != null and invoice.billFrom.ico != ''}">IČO: <span th:text="${invoice.billFrom.ico}"></span></p>
-            <p th:if="${invoice.billFrom.dic != null and invoice.billFrom.dic != ''}">DIČ: <span th:text="${invoice.billFrom.dic}"></span></p>
+            <p th:if="${invoice.billFrom.taxId != null and invoice.billFrom.taxId != ''}">IČO: <span th:text="${invoice.billFrom.taxId}"></span></p>
+            <p th:if="${invoice.billFrom.vatId != null and invoice.billFrom.vatId != ''}">DIČ: <span th:text="${invoice.billFrom.vatId}"></span></p>
             <p th:text="${invoice.billFrom.streetAddress}"></p>
             <p th:text="${invoice.billFrom.city} + ', ' + ${invoice.billFrom.zipCode}"></p>
             <p th:text="${invoice.billFrom.country}"></p>
@@ -131,8 +131,8 @@
         <div class="column">
             <h3>Bill To</h3>
             <p th:text="${invoice.billTo.companyName}"></p>
-            <p th:if="${invoice.billTo.ico != null and invoice.billTo.ico != ''}">IČO: <span th:text="${invoice.billTo.ico}"></span></p>
-            <p th:if="${invoice.billTo.dic != null and invoice.billTo.dic != ''}">DIČ: <span th:text="${invoice.billTo.dic}"></span></p>
+            <p th:if="${invoice.billTo.taxId != null and invoice.billTo.taxId != ''}">IČO: <span th:text="${invoice.billTo.taxId}"></span></p>
+            <p th:if="${invoice.billTo.vatId != null and invoice.billTo.vatId != ''}">DIČ: <span th:text="${invoice.billTo.vatId}"></span></p>
             <p th:text="${invoice.billTo.streetAddress}"></p>
             <p th:text="${invoice.billTo.city} + ', ' + ${invoice.billTo.zipCode}"></p>
             <p th:text="${invoice.billTo.country}"></p>

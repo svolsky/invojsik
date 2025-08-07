@@ -22,8 +22,8 @@ public class InvoiceDataDTO {
     @Data
     public static class AddressDTO {
         private String companyName;
-        private String ico;
-        private String dic;
+        private String taxId;
+        private String vatId;
         private String streetAddress;
         private String city;
         private String zipCode;
